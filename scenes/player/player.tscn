@@ -1,16 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://bh6rblm5oxn3g"]
+[gd_scene load_steps=10 format=3 uid="uid://bh6rblm5oxn3g"]
 
 [ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="1_dovo2"]
 [ext_resource type="Script" uid="uid://bb4u1ch88s26m" path="res://scripts/player/player.gd" id="1_gmlin"]
 [ext_resource type="ArrayMesh" uid="uid://dja0iaw276mdc" path="res://assets/models/player_Mesh.res" id="2_gmlin"]
 [ext_resource type="PackedScene" uid="uid://cwdeuv2mh06fw" path="res://scenes/player/thruster.tscn" id="4_lvxji"]
+[ext_resource type="PackedScene" uid="uid://crkj1jfq4qvme" path="res://scenes/player/thruster_small.tscn" id="5_p47bc"]
+[ext_resource type="AudioStream" uid="uid://d4gy8ma62v4mo" path="res://assets/sounds/thrusters3.ogg" id="6_qek5x"]
+[ext_resource type="AudioStream" uid="uid://da6rlqxrkwcv6" path="res://assets/sounds/shoot.wav" id="7_qek5x"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lvxji"]
-points = PackedVector3Array(0, 0, -1, 0.7, 0, 1, -0.7, 0, 1)
+points = PackedVector3Array(0, 0.1, -1, 0.7, 0.1, 1, -0.7, 0.1, 1, 0, -0.1, -1, 0.7, -0.1, 1, -0.7, -0.1, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmlin"]
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="RigidBody3D"]
+transform = Transform3D(1.00018, 0, 0, 0, 1.00018, 0, 0, 0, 1.00018, 0, 0, 0)
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+mass = 20.0
+gravity_scale = 0.0
+continuous_cd = true
 script = ExtResource("1_gmlin")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
@@ -21,27 +31,45 @@ mesh = ExtResource("2_gmlin")
 [node name="Hitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("ConvexPolygonShape3D_lvxji")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)
-top_level = true
-
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_gmlin")
 
 [node name="Thrusters" type="Node3D" parent="."]
 
 [node name="Main" parent="Thrusters" instance=ExtResource("4_lvxji")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7)
-size = 2.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.6)
 
-[node name="LeftBack" parent="Thrusters" instance=ExtResource("4_lvxji")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, 1)
+[node name="RightBackward" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 0.9)
 
-[node name="RightBack" parent="Thrusters" instance=ExtResource("4_lvxji")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 1)
+[node name="LeftBackward" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, 0.9)
 
-[node name="LeftForward" parent="Thrusters" instance=ExtResource("4_lvxji")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.7, 0, 1)
+[node name="RightForward" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.7, 0, 1.1)
 
-[node name="RightForward" parent="Thrusters" instance=ExtResource("4_lvxji")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.7, 0, 1)
+[node name="LeftForward" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.7, 0, 1.1)
+
+[node name="Right" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.4, 0, 0.2)
+
+[node name="Left" parent="Thrusters" instance=ExtResource("5_p47bc")]
+transform = Transform3D(-2.05963e-08, 0.000933662, -1, -0.000629588, 0.999999, 0.000933661, 1, 0.000629588, 5.67226e-07, -0.4, 0, 0.2)
+
+[node name="Sounds" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+
+[node name="ThrusterBig" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("6_qek5x")
+volume_db = -80.0
+autoplay = true
+
+[node name="ThrusterSmall" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("6_qek5x")
+volume_db = -80.0
+pitch_scale = 2.5
+autoplay = true
+
+[node name="Shoot" type="AudioStreamPlayer3D" parent="Sounds"]
+stream = ExtResource("7_qek5x")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://urfqfr2qea25"]
+
+[ext_resource type="Script" uid="uid://c265spmdmb13k" path="res://scripts/player/projectile/bullet.gd" id="1_j5eos"]
+[ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="2_0td6m"]
+[ext_resource type="AudioStream" uid="uid://dj72trf6ouktq" path="res://assets/sounds/player_hit.wav" id="3_0td6m"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oklhc"]
+size = Vector3(0.1, 0.1, 0.5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xfqhp"]
+material = ExtResource("2_0td6m")
+size = Vector2(-0.1, 0.5)
+
+[node name="Bullet" type="Area3D"]
+top_level = true
+script = ExtResource("1_j5eos")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_oklhc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_xfqhp")
+
+[node name="HitSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_0td6m")

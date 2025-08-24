@@ -1,28 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwdeuv2mh06fw"]
+[gd_scene load_steps=6 format=3 uid="uid://cwdeuv2mh06fw"]
 
 [ext_resource type="Script" uid="uid://ddi85hu42efxo" path="res://scripts/player/thruster.gd" id="1_h5ktb"]
 [ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="2_8sicq"]
+[ext_resource type="Script" uid="uid://dkoow5t681rwg" path="res://scripts/player/particle_fix.gd" id="3_8sicq"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_7llv8"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_h5ktb"]
+direction = Vector3(0, 0, 1)
+spread = 10.0
+initial_velocity_min = 10.0
+initial_velocity_max = 12.0
+gravity = Vector3(0, 0, 0)
+damping_min = 0.5
+damping_max = 0.5
+
+[sub_resource type="QuadMesh" id="QuadMesh_8sicq"]
 material = ExtResource("2_8sicq")
 size = Vector2(0.2, 0.2)
 orientation = 1
 
 [node name="Thruster" type="Node3D"]
 script = ExtResource("1_h5ktb")
-size = 1.0
 
-[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
-visible = false
-emitting = false
+[node name="Particles" type="GPUParticles3D" parent="."]
 amount = 40
-mesh = SubResource("QuadMesh_7llv8")
-direction = Vector3(0, 0, 1)
-spread = 5.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 10.0
-initial_velocity_max = 12.0
-damping_min = 8.0
-damping_max = 8.0
-scale_amount_min = 0.5
-scale_amount_max = 0.5
+process_material = SubResource("ParticleProcessMaterial_h5ktb")
+draw_pass_1 = SubResource("QuadMesh_8sicq")
+script = ExtResource("3_8sicq")

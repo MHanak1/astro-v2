@@ -7,16 +7,25 @@ var players: Array[int];
 var focused_player = 0
 var authorities = {}
 
-var instance;
+static var spawner_instance: MultiplayerSpawner
 
 signal on_player_added(pid)
 signal on_player_removed(pid)
 
 signal focused_player_changed(new_id)
 
+func _ready() -> void:
+	InputManager.on_new_device.connect(on_new_input)
+
+func on_new_input(input_id: int):
+	if !Game.is_multiplayer:
+		if !self.players.has(input_id):
+			self.players.append(input_id)
+			on_player_added.emit(input_id)
+
 func get_player(player_id: int) -> Player:
-	if instance != null:
-		return instance.get_node("Player %d" % player_id)
+	if spawner_instance != null:
+		return spawner_instance.get_node("Player %d" % player_id)
 	else:
 		return null
 
@@ -32,7 +41,7 @@ func create_player(player_id: int) -> Player:
 	if !players.has(player_id):
 		players.append(player_id)
 		on_player_added.emit(player_id)
-	if instance != null:
+	if spawner_instance != null:
 		return get_player(player_id)
 	else:
 		return null

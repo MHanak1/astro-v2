@@ -1,3 +1,3 @@
 extends Node
 
-var controllers_separate = false
+var controllers_separate = true
