@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bvxe37h5hedme"]
+
+[ext_resource type="Shader" uid="uid://chewaxi4f8ux5" path="res://assets/materials/wireframe.gdshader" id="1_3jjvi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_3jjvi")
+shader_parameter/color = Color(1, 1, 1, 1)

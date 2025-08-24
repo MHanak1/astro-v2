@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://bihchhfia1x1n"]
+
+[ext_resource type="Script" uid="uid://c5bgo1eswvhfu" path="res://scripts/game/player_spawner.gd" id="2_wby8v"]
+[ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="2_y4554"]
+[ext_resource type="PackedScene" uid="uid://ccf020t8lu8u4" path="res://assets/models/player.blend" id="3_wby8v"]
+[ext_resource type="PackedScene" uid="uid://bh6rblm5oxn3g" path="res://scenes/player/player.tscn" id="4_jxohq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wby8v"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+material_override = ExtResource("2_y4554")
+mesh = SubResource("BoxMesh_wby8v")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath(".")
+script = ExtResource("2_wby8v")
+playerScene = ExtResource("3_wby8v")
+
+[node name="Player" parent="." instance=ExtResource("4_jxohq")]

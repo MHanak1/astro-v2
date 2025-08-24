@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://bh6rblm5oxn3g"]
+
+[ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="1_dovo2"]
+[ext_resource type="Script" uid="uid://bb4u1ch88s26m" path="res://scripts/player/player.gd" id="1_gmlin"]
+[ext_resource type="ArrayMesh" uid="uid://dja0iaw276mdc" path="res://assets/models/player_Mesh.res" id="2_gmlin"]
+[ext_resource type="PackedScene" uid="uid://cwdeuv2mh06fw" path="res://scenes/player/thruster.tscn" id="4_lvxji"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lvxji"]
+points = PackedVector3Array(0, 0, -1, 0.7, 0, 1, -0.7, 0, 1)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmlin"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_gmlin")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+material_override = ExtResource("1_dovo2")
+instance_shader_parameters/color = Color(0, 0, 0, 0)
+mesh = ExtResource("2_gmlin")
+
+[node name="Hitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("ConvexPolygonShape3D_lvxji")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)
+top_level = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_gmlin")
+
+[node name="Thrusters" type="Node3D" parent="."]
+
+[node name="Main" parent="Thrusters" instance=ExtResource("4_lvxji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7)
+size = 2.0
+
+[node name="LeftBack" parent="Thrusters" instance=ExtResource("4_lvxji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, 1)
+
+[node name="RightBack" parent="Thrusters" instance=ExtResource("4_lvxji")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 1)
+
+[node name="LeftForward" parent="Thrusters" instance=ExtResource("4_lvxji")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -0.7, 0, 1)
+
+[node name="RightForward" parent="Thrusters" instance=ExtResource("4_lvxji")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0.7, 0, 1)
