@@ -23,6 +23,10 @@ class PlayerInput:
 	var primary
 	var secondary
 
+func _ready():
+	self.inputs.set(0, PlayerInput.new())
+	on_new_device.emit(0)
+
 func _input(event: InputEvent) -> void:
 	var is_controller = false
 	if event is InputEventJoypadButton || event is InputEventJoypadMotion:
@@ -34,8 +38,18 @@ func _input(event: InputEvent) -> void:
 		device += 1
 	
 	if !inputs.has(device):
+		if is_controller:
+			if event is InputEventJoypadButton:
+				if event.button_index == JOY_BUTTON_START:
+					inputs.set(device, PlayerInput.new())
+				else:
+					return
+			else:
+				return
+		else:
+			inputs.set(device, PlayerInput.new())
+		
 		on_new_device.emit(device)
-		inputs.set(device, PlayerInput.new())
 	
 	var input: PlayerInput = inputs[device]
 
@@ -79,9 +93,6 @@ func _input(event: InputEvent) -> void:
 	#D-Pad
 	elif event is InputEventJoypadButton:
 		match event.button_index:
-			JOY_BUTTON_START:
-				if event.is_pressed() && event.device == 0: # only allow the 1st connected controller to trigger this
-					self.controller_separate = !self.controller_separate
 			JOY_BUTTON_DPAD_UP:
 				if event.is_pressed():
 					input.movement.y += 1

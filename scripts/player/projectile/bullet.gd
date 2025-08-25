@@ -2,14 +2,14 @@ class_name Bullet extends Projectile
 
 const SPEED = 40.0
 
-var velocity: Vector3 = Vector3.ZERO
-
 func on_body_hit(body: Node3D):
-	print("dingus")
-	$HitSound.play()
+	#TODO: fix me
+	
+	if body is RigidBody3D:
+		body.apply_impulse(velocity.normalized() * 20, position - body.position)
 
-func _physics_process(delta: float) -> void:
-	self.position += velocity * delta
+	
+	$HitSound.play()
 
 static func create(shooter: Player) -> Bullet:
 	var new: Bullet = Scenes.bullet.instantiate()

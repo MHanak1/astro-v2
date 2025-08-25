@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://cjn6pdipm2jso"]
+
+[ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="1_8dm26"]
+[ext_resource type="Script" uid="uid://cxuhexmvmuqfq" path="res://scripts/effects/explosion.gd" id="1_fqp2o"]
+[ext_resource type="AudioStream" uid="uid://d2eec0b3kttgd" path="res://assets/sounds/explosion.wav" id="3_d6bb2"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fqp2o"]
+lifetime_randomness = 0.5
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 1.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_d6bb2"]
+material = ExtResource("1_8dm26")
+size = Vector2(0.2, 0.2)
+orientation = 1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8dm26"]
+lifetime_randomness = 0.5
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fqp2o"]
+material = ExtResource("1_8dm26")
+size = Vector2(0.1, 0.1)
+orientation = 1
+
+[node name="Explosion" type="Node3D"]
+script = ExtResource("1_fqp2o")
+
+[node name="Large" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fqp2o")
+draw_pass_1 = SubResource("QuadMesh_d6bb2")
+
+[node name="Small" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_8dm26")
+draw_pass_1 = SubResource("QuadMesh_fqp2o")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
+stream = ExtResource("3_d6bb2")

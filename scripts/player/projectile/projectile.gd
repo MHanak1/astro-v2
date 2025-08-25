@@ -1,9 +1,13 @@
 class_name Projectile extends Area3D
 
 var player: Player;
+var velocity: Vector3 = Vector3.ZERO
 
 func _enter_tree() -> void:
 	self.body_entered.connect(_on_body_hit)
+
+func _physics_process(delta: float) -> void:
+	self.position += velocity * delta
 
 static func create(shooter: Player) -> Projectile:
 	push_warning("Projectile's spawn() was not overwritten")

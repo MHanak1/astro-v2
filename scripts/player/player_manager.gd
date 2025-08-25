@@ -14,7 +14,7 @@ signal on_player_removed(pid)
 
 signal focused_player_changed(new_id)
 
-func _ready() -> void:
+func _init() -> void:
 	InputManager.on_new_device.connect(on_new_input)
 
 func on_new_input(input_id: int):

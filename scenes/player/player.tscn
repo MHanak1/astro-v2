@@ -1,15 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://bh6rblm5oxn3g"]
+[gd_scene load_steps=14 format=3 uid="uid://bh6rblm5oxn3g"]
 
 [ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="1_dovo2"]
 [ext_resource type="Script" uid="uid://bb4u1ch88s26m" path="res://scripts/player/player.gd" id="1_gmlin"]
 [ext_resource type="ArrayMesh" uid="uid://dja0iaw276mdc" path="res://assets/models/player_Mesh.res" id="2_gmlin"]
-[ext_resource type="PackedScene" uid="uid://cwdeuv2mh06fw" path="res://scenes/player/thruster.tscn" id="4_lvxji"]
-[ext_resource type="PackedScene" uid="uid://crkj1jfq4qvme" path="res://scenes/player/thruster_small.tscn" id="5_p47bc"]
+[ext_resource type="PackedScene" uid="uid://cwdeuv2mh06fw" path="res://scenes/effects/thruster.tscn" id="4_lvxji"]
+[ext_resource type="PackedScene" uid="uid://crkj1jfq4qvme" path="res://scenes/effects/thruster_small.tscn" id="5_p47bc"]
 [ext_resource type="AudioStream" uid="uid://d4gy8ma62v4mo" path="res://assets/sounds/thrusters3.ogg" id="6_qek5x"]
 [ext_resource type="AudioStream" uid="uid://da6rlqxrkwcv6" path="res://assets/sounds/shoot.wav" id="7_qek5x"]
+[ext_resource type="Script" uid="uid://cqonc2sragp4k" path="res://scripts/player/player_fragmentatorinator.gd" id="8_5gtgg"]
+[ext_resource type="PackedScene" uid="uid://b034fpcjwsg22" path="res://assets/models/player_destroyed.obj" id="9_5gtgg"]
+[ext_resource type="PackedScene" uid="uid://dn0q2ef8ud0rb" path="res://scenes/player/health_bar.tscn" id="10_h17s1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5gtgg"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lvxji"]
-points = PackedVector3Array(0, 0.1, -1, 0.7, 0.1, 1, -0.7, 0.1, 1, 0, -0.1, -1, 0.7, -0.1, 1, -0.7, -0.1, 1)
+points = PackedVector3Array(0, 0.5, -1, 0.7, 0.5, 1, -0.7, 0.5, 1, 0, -0.5, -1, 0.7, -0.5, 1, -0.7, -0.5, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gmlin"]
 
@@ -19,8 +24,11 @@ axis_lock_linear_y = true
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 mass = 20.0
+physics_material_override = SubResource("PhysicsMaterial_5gtgg")
 gravity_scale = 0.0
 continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 5
 script = ExtResource("1_gmlin")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
@@ -58,7 +66,6 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.4, 0
 transform = Transform3D(-2.05963e-08, 0.000933662, -1, -0.000629588, 0.999999, 0.000933661, 1, 0.000629588, 5.67226e-07, -0.4, 0, 0.2)
 
 [node name="Sounds" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
 
 [node name="ThrusterBig" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("6_qek5x")
@@ -73,3 +80,15 @@ autoplay = true
 
 [node name="Shoot" type="AudioStreamPlayer3D" parent="Sounds"]
 stream = ExtResource("7_qek5x")
+
+[node name="Fragmentinator" type="Node3D" parent="."]
+script = ExtResource("8_5gtgg")
+fragment_scene = ExtResource("9_5gtgg")
+metadata/_custom_type_script = "uid://cqonc2sragp4k"
+
+[node name="Floating" type="Node3D" parent="."]
+transform = Transform3D(1.00018, 0, 0, 0, 1.00018, 0, 0, 0, 1.00018, 0, 0, 0)
+top_level = true
+
+[node name="HealthBar" parent="Floating" instance=ExtResource("10_h17s1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.49973)

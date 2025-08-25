@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn0q2ef8ud0rb"]
+
+[ext_resource type="ArrayMesh" uid="uid://kt5q75hxcmd" path="res://assets/models/wireframe_plane.res" id="1_n1xf7"]
+[ext_resource type="Script" uid="uid://c38yvn43pipeh" path="res://scripts/player/health_bar.gd" id="1_ycjss"]
+[ext_resource type="Material" uid="uid://iu0yxfd8hkpp" path="res://assets/materials/fill.tres" id="2_5g1vt"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_ycjss"]
+material = ExtResource("2_5g1vt")
+size = Vector2(1.5, 0.2)
+center_offset = Vector3(0.75, 0, 0)
+orientation = 1
+
+[node name="HealthBar" type="Node3D"]
+script = ExtResource("1_ycjss")
+
+[node name="Outline" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.75, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = ExtResource("1_n1xf7")
+
+[node name="Bar" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0)
+mesh = SubResource("QuadMesh_ycjss")

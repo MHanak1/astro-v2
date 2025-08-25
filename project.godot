@@ -18,6 +18,10 @@ boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
+[audio]
+
+general/default_playback_type.web=0
+
 [autoload]
 
 GameSettings="*res://scripts/game/settings.gd"
@@ -36,7 +40,7 @@ window/vsync/vsync_mode=2
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/wakatime/plugin.cfg")
+enabled=PackedStringArray("res://addons/destruction/plugin.cfg", "res://addons/wakatime/plugin.cfg")
 
 [input]
 
@@ -105,11 +109,16 @@ turn_right={
 ]
 }
 
+[physics]
+
+3d/default_gravity=0.0
+3d/default_gravity_vector=Vector3(0, 0, 0)
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0, 0, 0, 0)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 
 [shader_globals]
 
