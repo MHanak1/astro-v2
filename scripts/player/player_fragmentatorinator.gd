@@ -16,7 +16,7 @@ func fragmentinate():
 		rigidbody.linear_velocity = get_parent_node_3d().linear_velocity
 		rigidbody.linear_damp = 0.5
 		rigidbody.angular_damp = 0.2
-		rigidbody.center_of_mass = mesh.get_aabb().get_center()
+		#rigidbody.center_of_mass = mesh.get_aabb().get_center()
 		rigidbody.mass = 5
 
 		

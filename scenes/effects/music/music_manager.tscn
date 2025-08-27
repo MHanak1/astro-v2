@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhvxvlgsqudpr"]
+
+[ext_resource type="Script" uid="uid://dgwqyr4sh0we8" path="res://scripts/effects/music/music_manager.gd" id="1_hdq1k"]
+[ext_resource type="AudioStream" uid="uid://dip7iraisr8ec" path="res://assets/music/lead_calm.tres" id="2_jrlc6"]
+
+[node name="MusicManager" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_hdq1k")
+
+[node name="Lead" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jrlc6")
+volume_db = -5.0
+bus = &"Music"
+
+[node name="Loop" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true

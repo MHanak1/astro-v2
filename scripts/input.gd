@@ -6,6 +6,8 @@ var player_input_map = {}
 
 signal on_new_device(device_id)
 
+signal game_pause_pressed
+
 const DEADZONE = 0.2
 
 class PlayerInput:
@@ -16,6 +18,7 @@ class PlayerInput:
 				return movement.normalized()
 			else:
 				return movement
+	var movement_absolute
 	var facing = Vector2(0, 0)
 	#false means controller joypad, where the facing value is already where the player should be looking
 	#true means it's a mouse position on screen position
@@ -24,6 +27,7 @@ class PlayerInput:
 	var secondary
 
 func _ready():
+	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	self.inputs.set(0, PlayerInput.new())
 	on_new_device.emit(0)
 
@@ -34,8 +38,10 @@ func _input(event: InputEvent) -> void:
 	
 	# this means only one keyboard is supported, if anyone needs multi keyboard support let me know
 	var device = event.device
-	if is_controller && GameSettings.controllers_separate:
+	if is_controller && GameSettings.get_setting("Controls", "controllers_separate"):
 		device += 1
+		
+
 	
 	if !inputs.has(device):
 		if is_controller:
@@ -52,6 +58,19 @@ func _input(event: InputEvent) -> void:
 		on_new_device.emit(device)
 	
 	var input: PlayerInput = inputs[device]
+
+	if is_controller:
+		if GameSettings.get_setting("Controls", "controller_absolute_movement"):
+			input.movement_absolute = true
+		else:
+			input.movement_absolute = false
+	else:
+		if GameSettings.get_setting("Controls", "keyboard_absolute_movement"):
+			input.movement_absolute = true
+		else:
+			input.movement_absolute = false
+	
+
 
 
 	#mouse
@@ -89,6 +108,10 @@ func _input(event: InputEvent) -> void:
 					input.movement.x += 1
 				else:
 					input.movement.x = 0
+			KEY_ESCAPE:
+				if device == 0 && event.is_pressed():
+					reset_all_inputs()
+					game_pause_pressed.emit()
 	
 	#D-Pad
 	elif event is InputEventJoypadButton:
@@ -117,6 +140,10 @@ func _input(event: InputEvent) -> void:
 				input.primary = event.is_pressed()
 			JOY_BUTTON_LEFT_SHOULDER:
 				input.primary = event.is_pressed()
+			JOY_BUTTON_START:
+				if device == 0 && event.is_pressed():
+					reset_all_inputs()
+					game_pause_pressed.emit()
 
 	#joystick
 	elif event is InputEventJoypadMotion:
@@ -141,9 +168,15 @@ func _input(event: InputEvent) -> void:
 	#if input.movement.length_squared() > 1.0:
 	#	input.movement = input.movement.normalized()
 	#inputs[device].movement = movement
-	
-	
+
+func reset_all_inputs():
+	for input in inputs:
+		inputs[input] = PlayerInput.new()
+
 func get_player_input(pid: int) -> PlayerInput:
+	if Game.paused:
+		return PlayerInput.new()
+	
 	if !player_input_map.has(pid):
 		player_input_map.set(pid, player_input_map.size())
 	

@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode unshaded,wireframe,cull_disabled;
 
-global uniform vec4 default_wireframe_color;
+const vec4 default_wireframe_color = vec4(0., 1., 0., 1.);
 instance uniform vec4 color : source_color = vec4(0.0);
 
 void vertex() {

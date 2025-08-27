@@ -12,6 +12,8 @@ static var spawner_instance: MultiplayerSpawner
 signal on_player_added(pid)
 signal on_player_removed(pid)
 
+signal player_died(pid)
+
 signal focused_player_changed(new_id)
 
 func _init() -> void:

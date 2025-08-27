@@ -1,15 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://bihchhfia1x1n"]
+[gd_scene load_steps=11 format=3 uid="uid://bihchhfia1x1n"]
 
+[ext_resource type="Script" uid="uid://bax3pftnbj5ua" path="res://scripts/game/game_scene.gd" id="1_001wt"]
 [ext_resource type="Script" uid="uid://c5bgo1eswvhfu" path="res://scripts/game/player_spawner.gd" id="2_wby8v"]
 [ext_resource type="Material" uid="uid://bvxe37h5hedme" path="res://assets/materials/wireframe.tres" id="2_y4554"]
 [ext_resource type="PackedScene" uid="uid://bh6rblm5oxn3g" path="res://scenes/player/player.tscn" id="3_wby8v"]
 [ext_resource type="Script" uid="uid://bbw3utic4eclr" path="res://scripts/game/camera.gd" id="4_jxohq"]
+[ext_resource type="StyleBox" uid="uid://dder5j202v8pm" path="res://assets/style/theme/overlay.tres" id="6_5j8aa"]
+[ext_resource type="Script" uid="uid://c15bjj4iwxf3q" path="res://scripts/ui/overlay_container.gd" id="6_i4q5m"]
+[ext_resource type="PackedScene" uid="uid://rbt83kesant2" path="res://scenes/ui/pause_menu.tscn" id="7_i4q5m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wby8v"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jxohq"]
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("1_001wt")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
@@ -55,3 +60,19 @@ id = -1
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)
 script = ExtResource("4_jxohq")
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+
+[node name="Menu" type="PanelContainer" parent="PauseMenu" node_paths=PackedStringArray("child")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("6_5j8aa")
+script = ExtResource("6_i4q5m")
+child = NodePath("PauseMenu")
+
+[node name="PauseMenu" parent="PauseMenu/Menu" instance=ExtResource("7_i4q5m")]
+visible = false

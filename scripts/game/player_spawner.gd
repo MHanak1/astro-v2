@@ -3,7 +3,6 @@ extends MultiplayerSpawner
 @export var playerScene : PackedScene
 
 func _enter_tree() -> void:
-	print(PlayerManager.players)
 	for player in PlayerManager.players:
 		spawn_player(player)
 	

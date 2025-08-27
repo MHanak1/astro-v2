@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6l8qspqiaxfg"]
+
+[ext_resource type="Script" uid="uid://68lpnxxrb3h4" path="res://scripts/effects/crt.gd" id="1_ecltl"]
+[ext_resource type="Material" uid="uid://bew2d0xwrmyr0" path="res://assets/style/crt.tres" id="1_rinhs"]
+
+[node name="PostProcessing" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_ecltl")
+
+[node name="CRT" type="ColorRect" parent="."]
+show_behind_parent = true
+top_level = true
+z_index = 100
+material = ExtResource("1_rinhs")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

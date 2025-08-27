@@ -44,10 +44,6 @@ func _process(delta: float):
 		var screen_size = get_viewport().get_visible_rect().size
 		var ratio = screen_size.x / screen_size.y
 		
-		print (player_bb_min)
-		print(player_bb_max)
-		print(center)
-		print(size)
 		
 		var target_position = Vector3.ZERO;
 		

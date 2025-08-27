@@ -23,10 +23,11 @@ var bullet_scene = preload("res://scenes/player/bullet.tscn")
 
 var health: float = GameSettings.max_health:
 	set(new):
-		health = new
-		if health < 0.0001:
+		if health > 0.0001 && new < 0.0001:
 			_kill()
+		health = new
 		$Floating/HealthBar.fill = health / GameSettings.max_health
+
 var controllable: bool:
 	get:
 		return alive && id >= 0
@@ -55,6 +56,7 @@ func _kill():
 	$Floating.visible = false
 	if $Hitbox:
 		$Hitbox.queue_free()
+	PlayerManager.player_died.emit(id)
 	#self.queue_free()
 	#$Destruction.destroy()
 
@@ -84,6 +86,13 @@ func _process(delta: float) -> void:
 	age += delta
 	
 	$Floating.position = position
+	
+	# Genius player AI
+	#if id < 0:
+	#	self.facing_towards.x = self.facing_towards.x + randf_range(-0.3, 0.3)
+	#	self.facing_towards.y = self.facing_towards.y + randf_range(-0.3, 0.3)
+	#	self.facing_towards = self.facing_towards.normalized()
+	#	self.movement_input.y = -1
 
 	update_effects()
 	if controllable:
@@ -103,6 +112,7 @@ func on_bullet_hit(bullet: Projectile):
 
 func update_effects():
 	var angle = self.facing_towards.angle_to(self.facing_vec)
+	angle = fmod(angle, PI)
 	if !controllable:
 		movement_input = Vector2.ZERO
 		angle = 0
@@ -133,8 +143,12 @@ func update_velocities(state: PhysicsDirectBodyState3D):
 		#state.apply_force()
 	
 	var movement: Vector2 = movement_input
+	if movement.length_squared() > 1.0:
+		movement = movement.normalized()
 	movement.x *= 0.5
-	movement = movement.rotated(-self.rotation.y) * speed * 200
+	movement = movement * speed * 200
+	
+	movement = movement.rotated(-self.rotation.y)
 	
 	state.apply_force(Vector3(movement.x, 0, movement.y))
 	
@@ -149,6 +163,9 @@ func update_velocities(state: PhysicsDirectBodyState3D):
 func handle_inputs():
 	var input = InputManager.get_player_input(self.id)
 	movement_input = input.movement
+	if input.movement_absolute:
+		movement_input = movement_input.rotated(rotation.y)
+	
 	
 	self.facing_towards = input.facing
 	
